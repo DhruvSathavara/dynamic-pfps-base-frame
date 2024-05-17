@@ -1,4 +1,4 @@
-'use client'
+// 'use server'
 import Error from "next/error";
 import { baseSepolia } from 'viem/chains'
 import { createPublicClient, createWalletClient, http } from 'viem'
@@ -72,7 +72,7 @@ export async function getCollectionForFrame(id) {
     console.log('function clledd....');
     try {
         console.log('id it self', id);
-        const storedDocRef = doc('Collection', id);
+        const storedDocRef = doc(collectionRef, id);
         const storedDoc = await getDoc(storedDocRef);
         console.log('success fully get col-=-=-=-=-', storedDoc);
         return storedDoc;
@@ -80,6 +80,7 @@ export async function getCollectionForFrame(id) {
         console.log('thos os ot error', error);
     }
 }
+// getCollectionForFrame();
 
 const returnURI = async (id, address) => {
     let uri = await publicClient.readContract({

@@ -1,3 +1,4 @@
+
 /** @jsxImportSource frog/jsx */
 
 import { Button, Frog, TextInput, parseEther } from 'frog'
@@ -9,33 +10,45 @@ import { devtools } from 'frog/dev'
 
 import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
-import { doc, getDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getFirestore } from 'firebase/firestore'
 import { collectionRef, db, getCollectionForFrame } from '@/app/models/firebase'
+import { initializeApp } from 'firebase/app';
 
 const app = new Frog({
   basePath: '/api',
 })
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCrcYaHTPHpSg0eg4p0q4Syt8Teysj7bro",
+  authDomain: "pfps-frame-dynamic.firebaseapp.com",
+  projectId: "pfps-frame-dynamic",
+  storageBucket: "pfps-frame-dynamic.appspot.com",
+  messagingSenderId: "230922425330",
+  appId: "1:230922425330:web:93b8472af4ed518971d16b"
+};
+
+
+
+const fireapp = initializeApp(firebaseConfig);
+export const firedb = getFirestore(fireapp);
+export const firecollectionRef = collection(firedb, "Collection");
+let collectionUri: any;
+
 
 
 app.frame("/:id", async (c) => {
-  // console.log('-----check context', c);
 
   const { id } = c.req.param();
+  // console.log('---=======-- here is id-=-=-=-=-', id);
 
-  console.log('---=======-- here is id-=-=-=-=-', id);
-  if (id) {
-    let col = await getCollectionForFrame(id);
-
-    console.log('-=-=- it is id-=-=', col);
-    // const docRef = doc(db, 'Collection', id);
-    // console.log('---doc ref---', docRef);
-
-
-  }
+  const storedDocRef = doc(firecollectionRef, id);
+  const storedDoc = await getDoc(storedDocRef);
+  collectionUri = storedDoc.data();
+  console.log('success fully get col-=-=-=-=-', collectionUri);
 
 
   return c.res({
+    action: '/:id/explore',
     image: (
       <div
         style={{
@@ -63,8 +76,8 @@ app.frame("/:id", async (c) => {
             marginBottom: "20px",
           }}
         >
-          {/* {bet.bet} */}
-          PFPs of Animes by xyz, get your self one!
+          {/* PFPs of Animes by xyz, get your self one!sdc */}
+          {collectionUri?.title}
         </h1>
         <div
           style={{
@@ -106,30 +119,59 @@ app.frame("/:id", async (c) => {
               fontWeight: "900",
             }}
           >
-            Collection size: 10
+            Collection size: {collectionUri?.uris?.length}
           </h2>
         </div>{" "}
 
       </div>
     ),
     intents: [
-      // eslint-disable-next-line react/jsx-key
-      <Button value='explore' action='/next'>Explore PFPs</Button>,
-      // <Button.Transaction
-      //   target={`/bet/yes/${id}`}
-      //   action={`/success/yes/${id}`}
-      // >
-      //   Bet Yes $5
-      // </Button.Transaction>,
-      // // eslint-disable-next-line react/jsx-key
-      // <Button.Transaction target={`/bet/no/${id}`} action={`/success/no/${id}`}>
-      //   Bet No $5
-      // </Button.Transaction>,
+      <Button value="explore" action={`/${id}/explore`} >Explore PFPs</Button>,
     ],
   });
 });
 
 
+
+
+app.frame('/:id/explore', async (c) => {
+  const { id } = c.req.param();
+
+  let currentIndex = 0;
+
+  console.log('check uri-=-=-=-', collectionUri?.uris?.length);
+
+
+  if (c.buttonValue && c.buttonValue.startsWith('nextPFP')) {
+    const parts = c.buttonValue.split('_');
+
+    if (parts.length > 1) {
+      currentIndex = parseInt(parts[1], 10) + 1;
+      console.log('current image should be-=-=-=-=-', collectionUri?.uris[currentIndex]);
+
+    }
+  }
+
+  // const col = await getCollection('gaming');
+
+  if (currentIndex >= collectionUri?.uris?.length) {
+    currentIndex = 0;
+    console.log('current image should be-=-=-=-=-', collectionUri?.uris[currentIndex]);
+
+  }
+
+  const { status } = c;
+
+  return c.res({
+    // image: "https://maroon-annoyed-dinosaur-120.mypinata.cloud/ipfs/QmRuwByPWCtVtjEBjpx1BJAtWAEqaTZE4ExpjsvFgbb3r5",
+    image: collectionUri.uris[currentIndex].image,
+    intents: [
+      <Button value={`nextPFP_${currentIndex}`} action={`/${id}/explore`}>Next PFP</Button>,
+      // <Button.Transaction target={`/mint/${col[currentIndex].tokenId}`}>Mint PFP</Button.Transaction>,
+      status === 'response' && <Button.Reset>Reset</Button.Reset>,
+    ],
+  })
+})
 
 
 

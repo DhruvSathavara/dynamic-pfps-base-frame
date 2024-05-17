@@ -10,7 +10,7 @@ import { Terminal } from "lucide-react";
 export default function Home() {
   const { authenticated, user, login, ready, logout } = usePrivy();
   const [bet, setBet] = useState({
-
+    title: "",
     address: "0x424982C7e5b95922694d6e14E3e03108609FDb68",
     chain: "Base sepolia",
     // bet: "",
@@ -20,7 +20,7 @@ export default function Home() {
   });
   const [status, setStatus] = useState<any>();
 
-  console.log('-----loggging status for sake---', status);
+  // console.log('-----loggging status for sake---', status);
 
 
   const create = async () => {
@@ -33,6 +33,7 @@ export default function Home() {
 
     if (data === undefined) {
       setStatus({
+        title: "",
         _id: "",
         address: "",
         chain: "",
@@ -44,6 +45,7 @@ export default function Home() {
       });
     } else
       setStatus({
+        title: data.title,
         _id: data.id,
         // bet: data.bet.bet,
         address: data.address,
@@ -76,12 +78,12 @@ export default function Home() {
               value={bet.priceTarget}
             /> */}
 
-            {/* <Input
+            <Input
               type="text"
-              placeholder="Unix Millisecond Timestamp"
-              onChange={(e) => setBet({ ...bet, deadline: e.target.value })}
-              value={bet.deadline}
-            /> */}
+              placeholder="title"
+              onChange={(e) => setBet({ ...bet, title: e.target.value })}
+              value={bet.title}
+            />
           </div>
 
           <Button className="w-40" onClick={create}>
