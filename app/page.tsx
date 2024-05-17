@@ -98,7 +98,10 @@ export default function Home() {
               <div>
                 {status?.error
                   ? "try again"
-                  : `${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/api/${status._id.stringValue}`}</div></>
+                  : `http://localhost:3000/api/${status._id.stringValue}`
+                  // : `${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/api/${status._id.stringValue}`
+                }
+              </div></>
           )}
         </main>
       ) : (
