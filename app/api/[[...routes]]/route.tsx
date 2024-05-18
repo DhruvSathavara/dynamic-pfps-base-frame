@@ -30,8 +30,8 @@ const firebaseConfig = {
 
 
 const fireapp = initializeApp(firebaseConfig);
-export const firedb = getFirestore(fireapp);
-export const firecollectionRef = collection(firedb, "Collection");
+const firedb = getFirestore(fireapp);
+const firecollectionRef = collection(firedb, "Collection");
 let collectionUri: any;
 
 
