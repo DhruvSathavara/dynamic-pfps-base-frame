@@ -99,7 +99,19 @@ export default function Home() {
                 {status?.error
                   ? "try again"
                   // : `${process.env.NEXT_PUBLIC_BASE_URL}api/${status._id.stringValue}` || `http://localhost:3000/api/${status._id.stringValue}`
-                  : `${process.env.NEXT_PUBLIC_BASE_URL ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/${status._id.stringValue}` : `http://localhost:3000/api/${status._id.stringValue}`}`
+                  :
+                  <a
+                    href={`https://warpcast.com/~/compose?text=Hey%2C%20I%20just%20created%20my%20PFPs%20collection%20on%20SFS%21!&embeds[]=${process.env.NEXT_PUBLIC_BASE_URL}/api/${status._id.stringValue}`}
+                    // href={`${process.env.NEXT_PUBLIC_BASE_URL ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/${status._id.stringValue}` : `http://localhost:3000/api/${status._id.stringValue}`}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    Post on Warpcast
+                  </a>
+                  // https://warpcast.com/~/compose?text=Hey%2C%20I%20just%20created%20my%20PFPs%20collection%20on%20SFS%21!&embeds[]=https://dynamic-pfps-base-frame.vercel.app/api/30S3YcCxYahofKHQLrCa
+
+                  // `${process.env.NEXT_PUBLIC_BASE_URL ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/${status._id.stringValue}` : `http://localhost:3000/api/${status._id.stringValue}`}`
                 }
               </div></>
           )}
