@@ -98,8 +98,8 @@ export default function Home() {
               <div>
                 {status?.error
                   ? "try again"
-                  : `http://localhost:3000/api/${status._id.stringValue}`
-                  // : `${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/api/${status._id.stringValue}`
+                  // : `${process.env.NEXT_PUBLIC_BASE_URL}api/${status._id.stringValue}` || `http://localhost:3000/api/${status._id.stringValue}`
+                  : `${process.env.NEXT_PUBLIC_BASE_URL ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/${status._id.stringValue}` : `http://localhost:3000/api/${status._id.stringValue}`}`
                 }
               </div></>
           )}
