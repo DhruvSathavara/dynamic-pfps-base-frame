@@ -101,7 +101,7 @@ export default function Home() {
                   // : `${process.env.NEXT_PUBLIC_BASE_URL}api/${status._id.stringValue}` || `http://localhost:3000/api/${status._id.stringValue}`
                   :
                   <a
-                    href={`https://warpcast.com/~/compose?text=Hey%2C%20I%20just%20created%20my%20PFPs%20collection%20on%20SFS%21!&embeds[]=${process.env.NEXT_PUBLIC_BASE_URL}/api/${status._id.stringValue}`}
+                    href={`https://warpcast.com/~/compose?text=Hey%2C%20I%20just%20created%20my%20PFPs%20collection%20on%20SFS%21!&embeds[]=https://dynamic-pfps-base-frame.vercel.app/api/${status._id.stringValue}`}
                     // href={`${process.env.NEXT_PUBLIC_BASE_URL ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/${status._id.stringValue}` : `http://localhost:3000/api/${status._id.stringValue}`}`}
                     target="_blank"
                     rel="noopener noreferrer"
