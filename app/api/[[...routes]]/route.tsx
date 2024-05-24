@@ -3,15 +3,10 @@
 
 import { Button, Frog, TextInput, parseEther } from 'frog'
 import { devtools } from 'frog/dev'
-// import { collectionRef } from '@/app/models/firebase'
-// import { collectionRef } from '@/app/models/firebase'
-
-// import { neynar } from 'frog/hubs'
-
+import { MarketplaceAbi } from '@/app/models/abi'
 import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
 import { collection, doc, getDoc, getFirestore } from 'firebase/firestore'
-import { collectionRef, db, getCollectionForFrame } from '@/app/models/firebase'
 import { initializeApp } from 'firebase/app';
 
 const app = new Frog({
@@ -39,7 +34,7 @@ let collectionUri: any;
 app.frame("/:id", async (c) => {
 
   const { id } = c.req.param();
-  // console.log('---=======-- here is id-=-=-=-=-', id);
+  console.log('---=======-- here is id-=-=-=-=-', id);
 
   const storedDocRef = doc(firecollectionRef, id);
   const storedDoc = await getDoc(storedDocRef);
@@ -87,23 +82,6 @@ app.frame("/:id", async (c) => {
             justifyContent: "center",
           }}
         >
-          <h2
-            style={{
-              color: "#FFFFFF",
-              fontSize: "2rem",
-              fontStyle: "normal",
-              letterSpacing: "-0.025em",
-              background: "#9369f3",
-              padding: "10px 20px",
-              borderRadius: "20px",
-              lineHeight: 1.4,
-              marginBottom: "30px",
-              textShadow: "1px 1px 2px #000000",
-              fontWeight: "900",
-            }}
-          >
-            Price : $ 5
-          </h2>{" "}
           <h2
             style={{
               color: "#FFFFFF",
@@ -167,12 +145,28 @@ app.frame('/:id/explore', async (c) => {
     image: collectionUri.uris[currentIndex].image,
     intents: [
       <Button value={`nextPFP_${currentIndex}`} action={`/${id}/explore`}>Next PFP</Button>,
-      // <Button.Transaction target={`/mint/${col[currentIndex].tokenId}`}>Mint PFP</Button.Transaction>,
+      <Button.Transaction target={`/mint/${collectionUri?.uris[currentIndex].tokenId}/${collectionUri?.uris[currentIndex].price}`}>Mint PFP</Button.Transaction>,
       status === 'response' && <Button.Reset>Reset</Button.Reset>,
     ],
   })
 })
 
+
+app.transaction(
+  '/mint/:tokenId/:price',
+  (c) => {
+    const { tokenId, price } = c.req.param();
+
+    return c.contract({
+      abi: MarketplaceAbi,
+      chainId: 'eip155:84532',
+      functionName: "buyPFP",
+      to: '0x2191B2055B305f2b3081d0233b4125614afD14Be',
+      args: [collectionUri?.address, tokenId],
+      value: parseEther(price)
+    })
+  }
+)
 
 
 devtools(app, { serveStatic })
