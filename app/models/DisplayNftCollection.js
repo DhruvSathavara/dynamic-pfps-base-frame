@@ -19,10 +19,10 @@ const NFTCollection = ({ nfts, metadata, userAddress }) => {
     const handlePriceChange = (index, price) => {
         setPrices((prevPrices) => ({
             ...prevPrices,
-            [index]: price.toString(),
+            [index]: price,
         }));
     };
-
+    console.log('-=-=-test price====', prices.toString());
 
     const handleSubmit = async () => {
         const selected = Object.keys(selectedNFTs).filter(index => selectedNFTs[index]);
@@ -31,7 +31,7 @@ const NFTCollection = ({ nfts, metadata, userAddress }) => {
             image: nfts[index].image,
             name: nfts[index].name,
             tokenId: nfts[index].tokenId,
-            price: Number(prices[index]),
+            price: prices[index].toString(),
             sold: false,
         }));
 
