@@ -1,15 +1,7 @@
 // 'use server'
 import Error from "next/error";
-import { baseSepolia } from 'viem/chains'
-import { createPublicClient, createWalletClient, http } from 'viem'
-import { abi } from "./abi.js"
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, setDoc, getDoc, query, where, doc, updateDoc } from "firebase/firestore";
-
-const publicClient = createPublicClient({
-    chain: baseSepolia,
-    transport: http(),
-})
+import { getFirestore, collection, addDoc, setDoc, getDoc, doc } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCrcYaHTPHpSg0eg4p0q4Syt8Teysj7bro",

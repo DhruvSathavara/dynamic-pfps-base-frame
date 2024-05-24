@@ -5,7 +5,7 @@ import approveAndListNFTs from './ApproveAndList';
 import { usePFPContext } from '../context/StatusContext';
 import { toast } from 'react-toastify';
 const NFTCollection = ({ nfts, metadata, userAddress }) => {
-    const { isListed, updateUserInfo } = usePFPContext();
+    const { updateUserInfo } = usePFPContext();
     const [selectedNFTs, setSelectedNFTs] = useState({});
     const [prices, setPrices] = useState({});
 
@@ -19,7 +19,7 @@ const NFTCollection = ({ nfts, metadata, userAddress }) => {
     const handlePriceChange = (index, price) => {
         setPrices((prevPrices) => ({
             ...prevPrices,
-            [index]: price,
+            [index]: price.toString(),
         }));
     };
 
@@ -48,7 +48,6 @@ const NFTCollection = ({ nfts, metadata, userAddress }) => {
             tokenId: nfts[index].tokenId,
             price: prices[index]
         }));
-        console.log('nft details to pass in====', nftDetails);
         const success = await approveAndListNFTs(metadata.address, nftDetails);
 
         console.log('is approval is succeed? ', success);
@@ -61,7 +60,6 @@ const NFTCollection = ({ nfts, metadata, userAddress }) => {
         }
 
         console.log('here is stored data on firebase:', data);
-        // alert('PFPs are listed for sale!!')
     }
 
     return (
