@@ -3,16 +3,13 @@ import { Button } from "../api/components/ui/button";
 import { Input } from "../api/components/ui/input";
 import { usePrivy } from "@privy-io/react-auth";
 import { useState } from "react";
-// import { SUPPORTED_TOKENS } from "./constants";
-import storeDataInFirebase from "../models/firebase.js"
 import getNFTCollection from "../models/FetchCollection"
 import NFTCollection from "../models/DisplayNftCollection.js"
-import { Terminal } from "lucide-react";
 import { usePFPContext } from "../context/StatusContext";
 
 function LandingPage() {
 
-    const { isListed, setIsListed } = usePFPContext();
+    const { isListed } = usePFPContext();
 
     const { authenticated, user, login, ready, logout } = usePrivy();
     const [bet, setBet] = useState({
@@ -20,7 +17,7 @@ function LandingPage() {
         address: "0xf1784AFa93603d4f0adAAA1aA5f68712E70c4784",
         chain: "Base sepolia",
     });
-    const [nftData, setNftData] = useState([]);
+    const [nftData, setNftData] = useState<any[]>([]);
 
     const create = async () => {
 
@@ -30,28 +27,6 @@ function LandingPage() {
         console.log('------here is all uris======', uris);
         setNftData(uris);
 
-
-        // let data = await storeDataInFirebase(col, user?.wallet?.address);
-        // console.log('here is res after storing data--------', data);
-
-
-        //   if (data === undefined) {
-        //     setStatus({
-        //       title: "",
-        //       _id: "",
-        //       address: "",
-        //       chain: "",
-        //       error: true,
-        //     });
-        //   } else
-        //     setStatus({
-        //       title: data.title,
-        //       _id: data.id,
-        //       address: data.address,
-        //       chain: data.chain,
-        //       uris: data.uris,
-        //       error: false,
-        //     });
     };
     return (
         <>
