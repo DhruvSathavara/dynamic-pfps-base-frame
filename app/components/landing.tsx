@@ -5,7 +5,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useState } from "react";
 // import { SUPPORTED_TOKENS } from "./constants";
 import storeDataInFirebase from "../models/firebase.js"
-import getNFTCollection from "../models/fetchCollection.js"
+import getNFTCollection from "../models/FetchCollection"
 import NFTCollection from "../models/DisplayNftCollection.js"
 import { Terminal } from "lucide-react";
 import { usePFPContext } from "../context/StatusContext";

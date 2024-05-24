@@ -1,20 +1,12 @@
 'use client'
 import { baseSepolia } from 'viem/chains'
-import { createPublicClient, createWalletClient, http } from 'viem'
-import { usePrivy } from "@privy-io/react-auth";
+import { createPublicClient, http } from 'viem'
 import { abi } from "./abi.js"
-// const { user } = usePrivy();
 
-export const publicClient = createPublicClient({
+const publicClient = createPublicClient({
     chain: baseSepolia,
     transport: http(),
 })
-
-// export const walletClient = createWalletClient({
-//     account: { address: user?.wallet?.address },
-//     chain: baseSepolia,
-//     transport: http('https://base-sepolia.g.alchemy.com/v2/5D113o1keOcRf_BH2eRgM6AYuOK_euUo'),
-// })
 
 async function getNFTCollection(metadata, address) {
 
